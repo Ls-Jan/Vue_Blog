@@ -1,0 +1,54 @@
+<body>
+    <div class="nav">
+        <ul class="center">
+             <li><a href="#">考试认证</a>|</li>
+             <li><a href="#">前端开发</a>|</li>
+             <li><a href="#">编程语言</a>|</li>
+             <li><a href="#">软件测试</a>|</li>
+             <li><a href="#">电商设计</a>|</li>
+             <li><a href="#">其他的课程</a>|</li>
+             <li><a href="#">新闻资讯</a>|</li>
+             <li><a href="#">人力资源</a>|</li>
+             <li><a href="#">联系我们</a></li>
+        </ul>
+    </div>
+    
+</body>
+
+<style>
+* {
+    padding: 0;
+    margin: 0;
+}
+.nav{
+    height: 58px;
+    background-color: #000;
+}
+.center {
+    width: 1000px;
+    margin: 0 auto;
+    list-style: none;
+    background-color: pink;
+}
+li{
+    color: rgb(224, 9, 9);
+    float: left;
+}
+li:hover{
+    background-color: violet;
+}
+a{
+    /* 
+        一定注意要把a转成行内块元素，
+        如果转的是块元素那么短竖线会掉下去，
+        因为块级元素是独占一行的
+    */
+    display:inline-block;
+    padding: 0 20px;
+    line-height: 58px;
+    text-decoration: none;
+    color: white;
+}
+
+</style>
+

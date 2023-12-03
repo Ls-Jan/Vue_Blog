@@ -1,0 +1,33 @@
+ul.Vertical {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: #f1f1f1;
+}
+
+
+ul.Vertical li a {
+    display: block;
+    color: #000;
+    padding: 8px 10px;
+    text-decoration: none;
+    /* text-align: center; */
+    border-bottom: 1px solid #555;
+    overflow:hidden;
+    text-overflow: ellipsis;
+}
+  
+ul.Vertical li:last-child {
+    border-bottom: none;
+}
+
+ul.Vertical li a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+ul.Vertical li a:hover:not(.active) {
+    background-color: #555;
+    color: white;
+}
+
