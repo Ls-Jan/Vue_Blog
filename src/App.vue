@@ -25,7 +25,7 @@ function Click_Menu(index){
             list_article.value=data;
             
             // console.log(list_article.value);
-            // console.log(data);
+            console.log(data);
             // console.log(XJ_Github.Get_Ratelimit());    
             // console.log(XJ_Github.Get_RequestTime());    
         })
@@ -42,7 +42,7 @@ function Click_Article(index){
   XJ_Github.Get_Readme('ls-jan',list_article.value[index]['name'])
         .then((data)=>{
             data=XJ_Github.Trans_Readme(data);
-            console.log(data);
+            // console.log(data);
             console.log(XJ_Github.Get_Ratelimit());
             console.log(XJ_Github.Get_RequestTime());
             data_article.value=data;
@@ -63,12 +63,12 @@ function Click_Article(index){
   <!-- <div style="width:100%"> -->
   <div>
     <div class="header">
-      <p>ABC</p>
+      <p>XJ的个人主页</p>
     </div>
 
     <!-- <textarea v-model="data"></textarea> -->
     <div>
-      <NavigationBar :data="list_menu" :index="index_menu" @click="Click_Menu"></NavigationBar>
+      <NavigationBar id="navi_menu" :data="list_menu" :index="index_menu" @click="Click_Menu"></NavigationBar>
     </div>
     <div class="body">
       
@@ -88,12 +88,18 @@ function Click_Article(index){
 <style scoped>
 
 .header {
-  background: linear-gradient(#444444, rgb(38, 38, 39));
+  background: linear-gradient(#444444,#222222);
   /* background-color: #2f5597; */
   text-align: center;
+  font-size: 30px;
   padding: 50px;
 }
 
+
+/* #navi_menu{
+  background-color:transparent;
+
+} */
 
 #navi_article{
   background-color: #222222;

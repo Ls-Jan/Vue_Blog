@@ -5,7 +5,7 @@
 export var XJ_Storage={//底层用的是localStorage，这玩意儿容量不行，才5MB，很容易就炸。是想过搞大点的，感觉很麻烦(容易出现不兼容问题)就算了：https://juejin.cn/post/7163075131261059086
   Get_EmptySpace:()=>null,//获取剩余空间(字节)
   Get_Data:(key)=>null,//获取数据，返回的是JSON对象
-  Set_Data:(key,data,timeout_min=60,force=true)=>{return true;},//设置数据，data为JSON对象。设置成功将返回true。force为真时强制赋值
+  Set_Data:(key,data,timeout_min=60,force=true)=>{return true;},//设置数据，data为JSON对象。设置成功将返回true。force为真时强制保存(反复移除最旧数据以获取足够空间保存)
   Opt_RemoveData:(key)=>{},//移除数据
   Opt_RemoveOldestData:()=>{},//移除最旧的数据
   Opt_RemoveInvalidData:()=>{},//移除过期的数据

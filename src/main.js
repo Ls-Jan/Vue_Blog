@@ -28,6 +28,17 @@ import {XJ_Github} from './scripts/XJ_Github'
 // console.log(XJ_Storage.Set_Data('val',[123]))
 // console.log(XJ_Storage.Get_Data('val'))
 
+
+// XJ_Storage.Opt_RemoveAll();
+
+// for(let i=localStorage.length-1;i>=0;--i){
+//     let key=localStorage.key(i);
+//     console.log('key',key);
+//     console.log('storage',XJ_Storage.Get_Data(key))
+//     console.log('\n')
+// }
+// console.log(XJ_Storage.Get_EmptySpace());
+
 // XJ_Storage.Opt_RemoveAll();
 
 // XJ_Github.Get_Repos('ls-jan')
@@ -35,13 +46,11 @@ import {XJ_Github} from './scripts/XJ_Github'
 //         data=XJ_Github.Trans_Repos(data);
 //         console.log(data);
 //         console.log(XJ_Github.Get_Ratelimit());    
-//         let date=XJ_Github.Get_RequestTime();
-//         // console.log(typeof(date));    
-
+//         // console.log(XJ_Github.Get_RequestTime());    
 //         console.log(XJ_Github.Get_RequestTime());
 //     })
-//     .catch((status,data)=>{
-//         console.log(status,data);
+//     .catch((err)=>{
+//         console.log(err);
 //     });
 
 // XJ_Github.Get_Readme('ls-jan','Python_RelativeImport')
@@ -50,17 +59,33 @@ import {XJ_Github} from './scripts/XJ_Github'
 //         data=XJ_Github.Trans_Readme(data);
 //         console.log(data);
 //         console.log(XJ_Github.Get_Ratelimit());
+//         console.log(XJ_Github.Get_RequestTime());    
 //     })
 //     .catch((status,data)=>{
 //         console.log(status,data);
 //     });
 
+// XJ_Github.Get_Content('ls-jan','Ls-Jan.github.io','assets/css')
+//     .then((data)=>{
+//         data=XJ_Github.Trans_Content(data);
+//         console.log(data);
+//         console.log(XJ_Github.Get_Ratelimit());
+//         console.log(XJ_Github.Get_RequestTime());    
+//     })
+//     .catch((status,data)=>{
+//         console.log(status,data);
+//     });
+
+XJ_Github.Get_BlogList('ls-jan')
+    .then((data)=>{
+        console.log(data);
+        console.log(XJ_Github.Get_Ratelimit());
+        console.log(XJ_Github.Get_RequestTime());    
+    })
+    .catch((status,data)=>{
+        console.log(status,data);
+    });
+
 // XJ_Github.Get_Readme('ls-jan','PyQt_Mask',Success_Readme,(status,data)=>{console.log(status,data);});
 // console.log(XJ_Github.Get_Ratelimit());
 
-
-// for(let i=localStorage.length;i>=0;--i){
-//     let key=localStorage.key(i);
-//     console.log(key);
-//     console.log(XJ_Storage.Get_Data(key))
-// }

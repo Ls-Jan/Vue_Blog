@@ -61,7 +61,7 @@ watch(props,()=>{
 
 div{
     width:100%;
-    background-color: #2c2b2b;
+    background-color: #222222;
 }
 
 </style>

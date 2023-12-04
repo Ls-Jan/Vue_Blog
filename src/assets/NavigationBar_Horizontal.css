@@ -45,10 +45,10 @@ ul.Horizontal li a {
 }
 
 ul.Horizontal li  a:hover {
-    background-color: #111;
+    background-color: #1B1B1B;
 }
 
 ul.Horizontal li a.active {
-    background-color: #232323;
+    background-color: #181818;
 }
 
