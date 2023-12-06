@@ -6,7 +6,7 @@ export var XJ_Article={
     data_navList:ref([]),//文章导航栏列表
     data_navLoadTip:ref(''),//文章导航栏加载提示(加载中，或者加载失败)
     data_navIndex:ref(-1),//文章导航栏索引值，与导航栏绑定。该值的更新会修改article
-    data_article:ref(''),//文章内容
+    data_article:ref(''),//文章内容（md文本已经渲染为html
     data_meta:ref({}),//与文章相关的Meta数据
 
     stat_NavShow:ref(false),//文章导航栏的显示状态

@@ -1,120 +1,85 @@
 
-<script setup>
-import { ref, onMounted } from 'vue'
-import Article from './components/Article.vue'
-import NavigationBar from './components/NavigationBar.vue'
-
-import {XJ_Storage} from './scripts/XJ_Storage'
-import {XJ_Github} from './scripts/XJ_Github'
+<script setup lang="ts">
+import { ElNotification as notify } from 'element-plus'
+import { ElButton, ElPageHeader,ElBreadcrumb,ElBreadcrumbItem,ElAvatar,ElDescriptions,ElDescriptionsItem} from 'element-plus';
 
 
-const data_article=ref('``12345AACC12345AACC12345AAC5AACC12345AACC12345AACC12345AACC12345AACC``');
-const list_menu=ref(['主页','博客','Github仓库','整活'])
-const list_article=ref([])
+// import 'element-plus/theme-chalk/display.css'
+// import 'element-plus/theme-chalk/dark/css-vars.css'
+// import "element-plus/theme-chalk/el-button.css";
+// import 'element-plus/theme-chalk/base.css'
+// import 'element-plus/theme-chalk/el-footer.css'
 
-const index_menu=ref(0);
-const index_article=ref(0);
+import 'element-plus/dist/index.css'
 
-function Click_Menu(index){
-  index_menu.value=index;
-  if(index==2){//GitHub仓库    
-    XJ_Github.Get_Repos('ls-jan')
-        .then((data)=>{
-            data=XJ_Github.Trans_Repos(data);
-            // list_article.value=[1,2,3];
-            list_article.value=data;
-            
-            // console.log(list_article.value);
-            console.log(data);
-            // console.log(XJ_Github.Get_Ratelimit());    
-            // console.log(XJ_Github.Get_RequestTime());    
-        })
-        .catch((status,data)=>{
-            console.log(status,data);
-        });
-  }
-  else{
-    list_article.value=[];
-  }
+
+const onBack = () => {
+  notify('Back')
 }
 
-function Click_Article(index){
-  XJ_Github.Get_Readme('ls-jan',list_article.value[index]['name'])
-        .then((data)=>{
-            data=XJ_Github.Trans_Readme(data);
-            // console.log(data);
-            console.log(XJ_Github.Get_Ratelimit());
-            console.log(XJ_Github.Get_RequestTime());
-            data_article.value=data;
-            index_article.value=index;
-            // list_article.value=[1,2,3];
-            // list_article.value=data;            
-        })
-        .catch((status,data)=>{
-            console.log(status,data);
-        });
-  // data_article
-}
 
 </script>
 
+
+
 <template>
-  <!-- <div style="width:100%"></div> -->
-  <!-- <div style="width:100%"> -->
-  <div>
-    <div class="header">
-      <p>XJ的个人主页</p>
-    </div>
+  <div aria-label="A complete example of page header">
+    <el-page-header @back="onBack">
+      <template #breadcrumb>
+        <el-breadcrumb separator="/">
+          <el-breadcrumb-item :to="{ path: './page-header.html' }">
+            homepage
+          </el-breadcrumb-item>
+          <el-breadcrumb-item
+            ><a href="./page-header.html">route 1</a></el-breadcrumb-item
+          >
+          <el-breadcrumb-item>route 2</el-breadcrumb-item>
+        </el-breadcrumb>
+      </template>
+      <template #content>
+        <div class="flex items-center">
+          <el-avatar
+            class="mr-3"
+            :size="32"
+            src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+          />
+          <span class="text-large font-600 mr-3"> Title </span>
+          <span
+            class="text-sm mr-2"
+            style="color: var(--el-text-color-regular)"
+          >
+            Sub title
+          </span>
+          <el-tag>Default</el-tag>
+        </div>
+      </template>
+      <template #extra>
+        <div class="flex items-center">
+          <el-button>Print</el-button>
+          <el-button type="primary" class="ml-2">Edit</el-button>
+        </div>
+      </template>
 
-    <!-- <textarea v-model="data"></textarea> -->
-    <div>
-      <NavigationBar id="navi_menu" :data="list_menu" :index="index_menu" @click="Click_Menu"></NavigationBar>
-    </div>
-    <div class="body">
-      
-      <NavigationBar id="navi_article" :data="list_article" :index="index_article" :trans="(data)=>data['name']" @click="Click_Article" vertical="true" searchable="true"></NavigationBar>
-      <Article id="article" :data="data_article" style="font-size: 25px;"></Article>
-    </div>
-
-    <div class="footer">
-
-    </div>
+      <el-descriptions :column="3" size="small" class="mt-4">
+        <el-descriptions-item label="Username"
+          >kooriookami</el-descriptions-item
+        >
+        <el-descriptions-item label="Telephone"
+          >18100000000</el-descriptions-item
+        >
+        <el-descriptions-item label="Place">Suzhou</el-descriptions-item>
+        <el-descriptions-item label="Remarks">
+          <el-tag size="small">School</el-tag>
+        </el-descriptions-item>
+        <el-descriptions-item label="Address"
+          >No.1188, Wuzhong Avenue, Wuzhong District, Suzhou, Jiangsu Province
+        </el-descriptions-item>
+      </el-descriptions>
+      <p class="mt-4 text-sm">
+        Element Plus team uses <b>weekly</b> release strategy under normal
+        circumstance, but critical bug fixes would require hotfix so the actual
+        release number <b>could be</b> more than 1 per week.
+      </p>
+    </el-page-header>
   </div>
-
-
 </template>
-
-
-<style scoped>
-
-.header {
-  background: linear-gradient(#444444,#222222);
-  /* background-color: #2f5597; */
-  text-align: center;
-  font-size: 30px;
-  padding: 50px;
-}
-
-
-/* #navi_menu{
-  background-color:transparent;
-
-} */
-
-#navi_article{
-  background-color: #222222;
-  float: left;
-  width: 20%;
-  padding: 1%;
-  /* padding: 10px; */
-
-}
-
-#article{
-  background-color: rgb(60, 61, 61);
-  float: left;
-  width: 75%;
-  padding: 1%;
-}
-
-</style>
