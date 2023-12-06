@@ -1,120 +1,49 @@
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import Article from './components/Article.vue'
-import NavigationBar from './components/NavigationBar.vue'
+import { ref, onMounted,watch } from 'vue'
 
-import {XJ_Storage} from './scripts/XJ_Storage'
-import {XJ_Github} from './scripts/XJ_Github'
+import {XJ_Article} from './scripts/XJ_Article'
 
 
-const data_article=ref('``12345AACC12345AACC12345AAC5AACC12345AACC12345AACC12345AACC12345AACC``');
-const list_menu=ref(['主页','博客','Github仓库','整活'])
-const list_article=ref([])
+const test=ref('')
 
-const index_menu=ref(0);
-const index_article=ref(0);
-
-function Click_Menu(index){
-  index_menu.value=index;
-  if(index==2){//GitHub仓库    
-    XJ_Github.Get_Repos('ls-jan')
-        .then((data)=>{
-            data=XJ_Github.Trans_Repos(data);
-            // list_article.value=[1,2,3];
-            list_article.value=data;
-            
-            // console.log(list_article.value);
-            console.log(data);
-            // console.log(XJ_Github.Get_Ratelimit());    
-            // console.log(XJ_Github.Get_RequestTime());    
-        })
-        .catch((status,data)=>{
-            console.log(status,data);
-        });
+watch(XJ_Article.stat_OptResult,()=>{
+  // console.log(XJ_Article.stat_OptResult.value);
+  if(XJ_Article.stat_OptResult.value==1){
+    // XJ_Article.data_navIndex.value=0;
+    XJ_Article.data_navIndex.value=3;
+    // console.log(XJ_Article.data_navList.value);
   }
-  else{
-    list_article.value=[];
+  if(XJ_Article.stat_OptResult.value!=0){
+    // console.log(XJ_Article.data_navList.value[0]);
+    console.log(XJ_Article.data_navList.value);
+    console.log(XJ_Article.data_article.value);
+    test.value=XJ_Article.data_article.value;
+    console.log();
   }
-}
+})
+//https://github.com/Ls-Jan/Ls-Jan.github.io/tree/main/Blog/自定义CMD命令/
 
-function Click_Article(index){
-  XJ_Github.Get_Readme('ls-jan',list_article.value[index]['name'])
-        .then((data)=>{
-            data=XJ_Github.Trans_Readme(data);
-            // console.log(data);
-            console.log(XJ_Github.Get_Ratelimit());
-            console.log(XJ_Github.Get_RequestTime());
-            data_article.value=data;
-            index_article.value=index;
-            // list_article.value=[1,2,3];
-            // list_article.value=data;            
-        })
-        .catch((status,data)=>{
-            console.log(status,data);
-        });
-  // data_article
-}
+// XJ_Article.Opt_UpdateNav(false,true);
+XJ_Article.Opt_UpdateNav(true);
+
+const val=ref('<button>Test</button>')
+
+// fetch('https://ls-jan.github.io/Blog/%E8%87%AA%E5%AE%9A%E4%B9%89CMD%E5%91%BD%E4%BB%A4/')
+//   .then((resp)=>{
+//     resp.text().then((data)=>{
+//       console.log(data);
+//       val.value=data;
+//     })
+//   })
+
 
 </script>
 
+
+
 <template>
-  <!-- <div style="width:100%"></div> -->
-  <!-- <div style="width:100%"> -->
-  <div>
-    <div class="header">
-      <p>XJ的个人主页</p>
-    </div>
-
-    <!-- <textarea v-model="data"></textarea> -->
-    <div>
-      <NavigationBar id="navi_menu" :data="list_menu" :index="index_menu" @click="Click_Menu"></NavigationBar>
-    </div>
-    <div class="body">
-      
-      <NavigationBar id="navi_article" :data="list_article" :index="index_article" :trans="(data)=>data['name']" @click="Click_Article" vertical="true" searchable="true"></NavigationBar>
-      <Article id="article" :data="data_article" style="font-size: 25px;"></Article>
-    </div>
-
-    <div class="footer">
-
-    </div>
-  </div>
-
-
+  <div v-html="test"></div>
+  <!-- <iframe :srcdoc="val"></iframe> -->
+  <!-- <div v-html="val"></div> -->
 </template>
-
-
-<style scoped>
-
-.header {
-  background: linear-gradient(#444444,#222222);
-  /* background-color: #2f5597; */
-  text-align: center;
-  font-size: 30px;
-  padding: 50px;
-}
-
-
-/* #navi_menu{
-  background-color:transparent;
-
-} */
-
-#navi_article{
-  background-color: #222222;
-  float: left;
-  width: 20%;
-  padding: 1%;
-  /* padding: 10px; */
-
-}
-
-#article{
-  background-color: rgb(60, 61, 61);
-  float: left;
-  width: 75%;
-  padding: 1%;
-}
-
-</style>

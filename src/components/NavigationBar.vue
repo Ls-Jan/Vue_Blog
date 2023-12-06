@@ -39,6 +39,13 @@ watch(props,()=>{
 <template>
     <div>
         <Search id="search" v-if="props.searchable" :data="props.data" :trans="props.trans" @match="(lst)=>indexLst=lst" placeholder="搜索"/>
+        <div class="Navi">
+            <template v-for="index in indexLst">
+                <div class="Menu_item" href="javascript:void(0)" @click="itemClick(index)" :class="{active:index==props.index}">{{ props.trans?props.trans(props.data[index]):props.data[index] }}</div>
+                <!-- <a href="javascript:void(0)" @click="itemClick(index)" :class="{active:index==props.index}">{{ props.trans?props.trans(props.data[index]):props.data[index] }}</a> -->
+            </template>
+        </div>
+
 
         <ul :class="{Vertical:props.vertical,Horizontal:!props.vertical}">
             <li v-if="!props.data.length">
@@ -57,11 +64,28 @@ watch(props,()=>{
 </template>
 
 
-<style scoped>
+<style>
+div.Navi{
+    display: flex;
+    flex-direction: row;
+}
 
-div{
-    width:100%;
+div.Menu_item{
+    display: block;
+    width: 50px;
+    font-size: 50px;
     background-color: #222222;
+}
+
+
+div.Menu_item:hover{
+    background-color: #111111;
+
+}
+
+div.Menu_item:active{
+    background-color: #ff4d4d;
+
 }
 
 </style>

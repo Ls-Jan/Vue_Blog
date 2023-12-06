@@ -1,22 +1,24 @@
 
 import { createApp } from 'vue'
 import App from './App.vue'
+// import Test3 from './Test3.vue'
 // import Test2 from './Test2.vue'
-import Test from './Test.vue'
-import Article from './components/Article.vue'
-
+// import Test from './Test.vue'
+// import Article from './components/Article.vue'
 // import {num} from './scripts/Test';
 
 // createApp(Article).mount('#app')
 // createApp(Test).mount('#app')
+// createApp(Test3).mount('#app')
 // createApp(Test2).mount('#app')
 createApp(App).mount('#app')
 
 
 
 
-import {XJ_Storage} from './scripts/XJ_Storage'
-import {XJ_Github} from './scripts/XJ_Github'
+
+// import {XJ_Storage} from './scripts/XJ_Storage'
+// import {XJ_Github} from './scripts/XJ_Github'
 
 
 // let lst=[[1,300],[2,200],[3,100]]
@@ -76,15 +78,15 @@ import {XJ_Github} from './scripts/XJ_Github'
 //         console.log(status,data);
 //     });
 
-XJ_Github.Get_BlogList('ls-jan')
-    .then((data)=>{
-        console.log(data);
-        console.log(XJ_Github.Get_Ratelimit());
-        console.log(XJ_Github.Get_RequestTime());    
-    })
-    .catch((status,data)=>{
-        console.log(status,data);
-    });
+// XJ_Github.Get_BlogList('ls-jan')
+//     .then((data)=>{
+//         console.log(data);
+//         console.log(XJ_Github.Get_Ratelimit());
+//         console.log(XJ_Github.Get_RequestTime());    
+//     })
+//     .catch((status,data)=>{
+//         console.log(status,data);
+//     });
 
 // XJ_Github.Get_Readme('ls-jan','PyQt_Mask',Success_Readme,(status,data)=>{console.log(status,data);});
 // console.log(XJ_Github.Get_Ratelimit());
