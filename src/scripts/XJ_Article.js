@@ -323,7 +323,8 @@ function __Get_Meta(index) {
                 'forks': 'forks',
                 'stargazers_count': 'stars',
                 'created_at': 'cTime',
-                'updated_at': 'mTime',//有个pushed_at的，但一般情况下updated_at的时间更新
+                'updated_at': 'uTime',//不知为何，pushed_at有时是比updated_at还要新，就很莫名其妙
+                'pushed_at': 'pTime',
             };
             break;
         }
@@ -350,22 +351,31 @@ function __Get_Meta(index) {
             meta[trans[key]] = data[key];
         }
 
-        if (this.__navType == 'blog') {//Blog的比较特殊，个别数据需额外处理。按理应该要单独拿到别的函数里头，但拿出去也没法复用，就无所谓了
-            //url：将链接导到github.com上
-            let url = 'https://github.com/$user/$user.github.io/tree/main/Blog/$path';
-            url = url
-                .replace('$user', this.__user)
-                .replace('$user', this.__user)
-                .replace('$path', index.join('/'));
-            meta['url'] = url;
+        switch (this.__navType) {
+            case 'github': {//由于pushed_at和updated_at的时间出现新旧不一致的问题，这里单独进行判断mTime
+                meta['mTime'] = meta['uTime'] > meta['pTime'] ? meta['uTime'] : meta['pTime'];
+                break;
+            }
+            case 'blog': {//Blog的比较特殊，个别数据需额外处理。按理应该要单独拿到别的函数里头，但拿出去也没法复用，就无所谓了
+                //url：将链接导到github.com上
+                let url = 'https://github.com/$user/$user.github.io/tree/main/Blog/$path';
+                url = url
+                    .replace('$user', this.__user)
+                    .replace('$user', this.__user)
+                    .replace('$path', index.join('/'));
+                meta['url'] = url;
 
-            //name：标题去掉头尾的“./”和“/Readme.md”保留中间
-            let lst = meta['name'].split('/');
-            lst.shift();
-            lst.pop();
-            meta['name'] = lst.join(' / ');
+                //name：标题去掉头尾的“./”和“/Readme.md”保留中间
+                let lst = meta['name'].split('/');
+                lst.shift();
+                lst.pop();
+                meta['name'] = lst.join(' / ');
 
-            meta['struct'] = this.__Trans_Struct(meta['struct']);
+                //struct：转为ElTree对应数据结构
+                meta['struct'] = this.__Trans_Struct(meta['struct']);
+
+                break;
+            }
         }
     }
     return meta;
