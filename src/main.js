@@ -1,20 +1,14 @@
 
+// 使用护眼色：https://element-plus.org/zh-CN/guide/dark-mode.html
+// 加载loading指令：https://blog.csdn.net/weixin_44733774/article/details/134935153
+import 'element-plus/dist/index.css'
+import 'element-plus/theme-chalk/dark/css-vars.css'
+import './assets/main.css'
 import { createApp } from 'vue'
-
-
+import { ElLoading } from 'element-plus'
 import App from './App.vue'
-createApp(App).mount('#app')
 
-import Test from './Test.vue'
-// createApp(Test).mount('#app')
-
-// import Test2 from './Test2.vue'
-// createApp(Test2).mount('#app')
-
-// import Test3 from './Test3.vue'
-// createApp(Test3).mount('#app')
-
-// import Article from './components/Article.vue'
-// createApp(Article).mount('#app')
-
+const app = createApp(App);
+app.directive('loading', ElLoading.directive)
+app.mount('#app');
 

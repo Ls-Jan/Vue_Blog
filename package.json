@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@element-plus/icons": "^0.0.11",
     "@types/marked": "^6.0.0",
     "element-plus": "^2.4.3",
     "highlight.js": "^11.9.0",

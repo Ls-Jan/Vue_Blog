@@ -4,105 +4,16 @@
   <head>
   </head>
   <body>
+    <div id="app"></div>
 
+    <script type="module">
+      import { createApp } from 'vue'
 
-    <h class="Head">123</h>
-    <div class="Nav">
-      <div class="Nav2">
-        <button>A</button>
-        <button>B</button>
-        <button>C</button>
-      </div>
-    </div>
-    <div class="Body">
-      <div class="Nav_Article">
-          <button>A</button>
-          <button>B</button>
-          <button>C</button>
-          <button>D</button>
-          <button>E</button>
-          <button>F</button>
-      </div>      
-      <div class="Article">
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-      </div>
-  </div>
-
-
-  </body>
-
-
-  <style>
-    h.Head {
-      display: block;
-      text-align: center;
-      font-size:100px;        
-      color:rgb(16, 61, 126);
-    }
-
-    div.Body {
-      display:flex;
-      background-color: #444488;
-    }
-
-    div.Nav{
-      /* position: sticky; */
-      /* top: 0; */
-      /* left: 0; */
-
-      background-color: black;
-
-      color: white;
-      padding: 10px;
-      position: sticky;
-      margin: 1em 0;
-    }
-
-    div.Nav2{
-      background-color: #440044;
-      margin: 0 auto;
-      width: fit-content;
-      /* width: auto; */
-    }
-
-    button{
-      width: 200px;
-      font-size: 100px;
-      /* float: left; */
-    }
-
-    p{
-      font-size: 100px;
-      padding: 0;
-      margin: 0;
-    }
-    div.Nav_Article{
-      /* float: left; */
-      /* display: none; */
-      /* visibility: hidden; */
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      overflow:scroll;
-    }
-
-    div.Article{
-      /* float: right; */
+      import 'element-plus/dist/index.css'
       
-    }
-
-  </style>
+      import App from './src/Test.vue'
+      createApp(App).mount('#app')
+    </script>
 
 </html>
 

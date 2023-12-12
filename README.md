@@ -1,7 +1,7 @@
 # VueBlog
 
-使用的是Vue3框架。目的是用于构建``XXX.github.io``主页，<br>
-也就是只要我的主页[Ls-Jan.github.io](https://github.com/Ls-Jan/Ls-Jan.github.io)一直没做好的话这个项目就一直只是个半成品而已。
+使用的是Vue3框架+ElementPlus组件，是我的主页[Ls-Jan.github.io](https://github.com/Ls-Jan/Ls-Jan.github.io)的构建项目。
+内部代码耦合严重，模块功能混乱，体会到亲手砌起一坨shi山的无力感。
 
 ## 操作：
 1. 项目下载下来后在项目路径中执行``npm install``构建项目
