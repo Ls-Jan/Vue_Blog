@@ -19,7 +19,7 @@ export var XJ_Article = {
     stat_UpdateTime: ref({ 'nav': new Date(), 'article': new Date() }),//【Github仓库】记录导航栏和文章的更新时间
     stat_XRateLimit: ref({ 'reset': new Date(), 'remaining': 60 }),//【Github仓库】记录api.github.com的限流情况，remaining为剩余请求次数，reset为请求重置的时间
 
-    Opt_UpdateNav: (github = false, blog = false, force = false) => { },//更新导航栏内容(以及文章内容)，如果传入的两值均为False那么视为“显示主页”并隐藏导航栏
+    Opt_UpdateNav: (github = false, blog = false, force = false) => { },//【小改，返回Promise】。更新导航栏内容(以及文章内容)，如果传入的两值均为False那么视为“显示主页”并隐藏导航栏
     Opt_UpdateArticle: (force = true) => { },//【Github仓库】强制更新当前文章
     Trans_Markdown: (data, rootUrl = './') => { },//将md文本渲染为html。并将其中的图片路径全部转换为有效路径以便资源成功加载
     Test_HasReadme: (index) => { },//【模块设计纰漏】【补丁行为】判断Blog的index路径是否有Readme.md文件
@@ -64,68 +64,80 @@ marked.use(markedHighlight({
     }
 }))
 
+
+
+
 function Opt_UpdateNav(github = false, blog = false, force = false) {
-    this.data_navLoadTip.value = '加载中...';
-    this.data_navList.value = [];
-    this.stat_OptResult.value['article'] = 1;
-    this.stat_OptResult.value['nav'] = 0;
-    this.data_article.value = '';
-    this.__promise.abort();
-    if (github) {
-        this.stat_NavShow.value = true;
-        this.__navType = 'github';
-        this.__promise = this.__Get_Promise(XJ_Github.Get_Repos(this.__user, force));
-        this.__promise
-            .then((data) => {
-                data = XJ_Github.Trans_Repos(data);
-                this.__navList = data;
-                this.data_navList.value = this.__Trans_RepoList(data);
-                this.data_navIndex.value = [];
-                this.stat_OptResult.value['nav'] = 1;
-                this.stat_XRateLimit.value = XJ_Github.Get_XRatelimit();
-                this.stat_UpdateTime.value['nav'] = XJ_Github.Get_RequestTime();
-            })
-            .catch((resp) => {
-                if (resp != null) {//仅在主动中断Promise的时候resp为null
-                    this.__Fail(resp.status, resp.url, true);
-                    this.stat_OptResult.value['nav'] = -1;
-                }
-            })
-    }
-    else if (blog) {
-        this.stat_NavShow.value = true;
-        this.__navType = 'blog';
-        let url = './Blog/BlogList.json';
-        this.__promise = this.__Get_Promise(fetch(url));
-        this.__promise
-            .then((resp) => {
-                if (resp.status == 200) {//请求成功
-                    resp.text()//data.text()仅仅是个Promise，还需.then方法进一步获取数据
-                        .then((data) => {
-                            data = JSON.parse(data);
-                            this.__navList = data;
-                            this.data_navList.value = this.__Trans_BlogList(data);
-                            this.data_navIndex.value = [];
-                            this.stat_OptResult.value['nav'] = 1;
-                        })
-                } else {
-                    this.__Fail(resp.status, url, true);
-                    this.stat_OptResult.value['nav'] = -1;
-                }
-            })
-            .catch((err) => {//fetch在无法获取资源时将返回一段字符串(例如连接超时、无网络之类的
-                if (err != null) {//等于null的情况是主动中断Promise的时候
-                    this.__Fail(0, url, true);
-                    this.stat_OptResult.value['nav'] = -1;
-                }
-            });
-    }
-    else {
-        this.data_navIndex.value = [];
-        this.stat_NavShow.value = false;
-        this.stat_OptResult.value['nav'] = 1;
-    }
+    return new Promise((success, fail) => {
+        this.data_navLoadTip.value = '加载中...';
+        this.data_navList.value = [];
+        this.stat_OptResult.value['article'] = 1;
+        this.stat_OptResult.value['nav'] = 0;
+        this.data_article.value = '';
+        this.__promise.abort();
+        if (github) {
+            this.stat_NavShow.value = true;
+            this.__navType = 'github';
+            this.__promise = this.__Get_Promise(XJ_Github.Get_Repos(this.__user, force));
+            this.__promise
+                .then((data) => {
+                    data = XJ_Github.Trans_Repos(data);
+                    this.__navList = data;
+                    this.data_navList.value = this.__Trans_RepoList(data);
+                    this.data_navIndex.value = [];
+                    this.stat_OptResult.value['nav'] = 1;
+                    this.stat_XRateLimit.value = XJ_Github.Get_XRatelimit();
+                    this.stat_UpdateTime.value['nav'] = XJ_Github.Get_RequestTime();
+                    success();
+                })
+                .catch((resp) => {
+                    if (resp != null) {//仅在主动中断Promise的时候resp为null
+                        this.__Fail(resp.status, resp.url, true);
+                        this.stat_OptResult.value['nav'] = -1;
+                    }
+                })
+        }
+        else if (blog) {
+            this.stat_NavShow.value = true;
+            this.__navType = 'blog';
+            let url = './Blog/BlogList.json';
+            this.__promise = this.__Get_Promise(fetch(url));
+            this.__promise
+                .then((resp) => {
+                    if (resp.status == 200) {//请求成功
+                        resp.text()//data.text()仅仅是个Promise，还需.then方法进一步获取数据
+                            .then((data) => {
+                                data = JSON.parse(data);
+                                this.__navList = data;
+                                this.data_navList.value = this.__Trans_BlogList(data);
+                                this.data_navIndex.value = [];
+                                this.stat_OptResult.value['nav'] = 1;
+                                success();
+                            })
+                    } else {
+                        this.__Fail(resp.status, url, true);
+                        this.stat_OptResult.value['nav'] = -1;
+                        fail();
+                    }
+                })
+                .catch((err) => {//fetch在无法获取资源时将返回一段字符串(例如连接超时、无网络之类的
+                    if (err != null) {//等于null的情况是主动中断Promise的时候
+                        this.__Fail(0, url, true);
+                        this.stat_OptResult.value['nav'] = -1;
+                        fail();
+                    }
+                });
+        }
+        else {
+            this.data_navIndex.value = [];
+            this.stat_NavShow.value = false;
+            this.stat_OptResult.value['nav'] = 1;
+            success();
+        }
+    });
 }
+
+
 
 function Opt_UpdateArticle(force = true) {
     let index = this.data_navIndex.value;
@@ -163,7 +175,7 @@ function Opt_UpdateArticle(force = true) {
                 //只不过试了下又感觉没啥区别(而且从readme.md文件中读取的话内容更加可控)，然后就删掉了
                 let url = './Blog/$name/$file_md'
                     .replace('$name', index.join('/'))
-                if (Object.keys(meta)) {
+                if (Object.keys(meta).length) {
                     let file_md = "";
                     for (let node of meta['struct']) {
                         let name = node.label;

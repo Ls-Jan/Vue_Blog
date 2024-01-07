@@ -16,8 +16,13 @@ import Brief_Blog from './components/Brief/Blog.vue'
 import Brief_Github from './components/Brief/Github.vue'
 import Brief_Other from './components/Brief/Other.vue'
 
+
 const list_menu = [['home', '主页'], ['blog', '博客'], ['github', 'Github仓库'], ['other', '整活'],];
+const index_menu = ref(0);
+let index_article = [];//【2024/1/7新增】无关紧要的全局变量，纯粹的补丁行为
+
 let menu = ref('home');
+
 const props_article = {
   cont_article: ref(XJ_Article.data_article.value),//传入的是html代码
   cont_tag: ref(null),//附在标题后面的Tag
@@ -32,13 +37,18 @@ const props_article = {
 }
 
 function Click_Menu(index) {
+  index_menu.value = index;
   menu.value = list_menu[index][0];
   props_article.showHeader.value = false;
   props_article.showAddition.value = false;
   switch (menu.value) {//主页
     case 'blog'://博客
     case 'github': {//GitHub仓库
-      XJ_Article.Opt_UpdateNav(menu.value == 'github', true);
+      XJ_Article.Opt_UpdateNav(menu.value == 'github', true).
+        then(() => {//【2024/1/7新增】文章导航栏发生变动时修改对应索引
+          XJ_Article.data_navIndex.value = index_article;
+          index_article = [];
+        });
       break;
     }
     case 'other'://其他
@@ -50,11 +60,16 @@ function Click_Menu(index) {
 }
 
 watch(XJ_Article.data_navIndex, () => {
+  //【2024/1/7新增】修改当前href
   let flag = XJ_Article.data_navIndex.value.length > 0;
+  window.location.href = window.location.href.split('#')[0] + '#' + [menu.value, ...XJ_Article.data_navIndex.value].join('/');
+  // console.log(">>>navIndex", XJ_Article.data_navIndex.value);
+
   props_article.showHeader.value = flag;
   props_article.showAddition.value = flag;
   document.documentElement.scrollTop = 0;
 })
+
 
 watch(XJ_Article.data_article, () => {
   props_article.cont_article.value = XJ_Article.data_article.value;
@@ -85,15 +100,35 @@ watch(XJ_Article.stat_OptResult.value, () => {
   let opt = XJ_Article.stat_OptResult.value
   switch (opt['article']) {
     case -1: {
-      ElMessage.error('文章加载失败')
+      ElMessage.error('文章加载失败');
     }
   }
   switch (opt['nav']) {
     case -1: {
-      ElMessage.error('导航栏加载失败')
+      ElMessage.error('导航栏加载失败');
     }
   }
 })
+
+
+onMounted(() => {
+  //【2024/1/7新增】网页加载时顺带加载对应文章
+  let lst = decodeURI(window.location.href).split('#');//url链接解码，否则出现无法解析的百分号字串
+  if (lst[1]) {
+    lst = lst[1].split('/');
+    if (lst.length > 0) {
+      let menuName = lst.shift();
+      let i = 0;
+      for (i = list_menu.length - 1; i > 0; --i) {
+        if (list_menu[i][0] == menuName)
+          break;
+      }
+      Click_Menu(i);
+      index_article = lst;
+    }
+  }
+})
+
 </script>
 
 
@@ -110,7 +145,8 @@ watch(XJ_Article.stat_OptResult.value, () => {
     </div>
 
     <div style="min-width: 60rem;">
-      <NaviBar class="NavHead" :data="list_menu.map((item) => item[1])" @click="Click_Menu" index="0"></NaviBar>
+      <NaviBar class="NavHead" :data="list_menu.map((item) => item[1])" @click="Click_Menu" :index="index_menu">
+      </NaviBar>
       <div style="height:20px;"></div>
 
       <el-row>

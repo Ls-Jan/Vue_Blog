@@ -100,7 +100,10 @@ function ItemClick(index, node) {
         <p v-show="props.cont_meta.isforked != null">是否fork：{{ props.cont_meta.isforked }}</p>
         <p v-show="props.cont_meta.allowforking != null">允许fork：{{ props.cont_meta.allowforking }}</p>
         <p v-show="props.cont_meta.forks != null">fork数：{{ props.cont_meta.forks }}</p>
+        <p v-show="props.cont_meta.url != null">
         <p>点击跳转<a :href="props.cont_meta.url" target="_blank">Github链接</a></p>
+        </p>
+
       </div>
     </div>
   </div>
