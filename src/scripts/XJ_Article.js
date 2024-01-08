@@ -238,6 +238,8 @@ function Trans_Markdown(data, rootUrl = './') {
         data = data.replace(item[0], item[1]);
     })
     data = marked(data)// 将markdown内容解析
+    // console.clear();
+    // console.log(data);
     return data;
 }
 
