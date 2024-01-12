@@ -40,11 +40,11 @@ async function ItemClick(index, node) {
 			if (time - item[0] < 500) {//双击
 				let rootUrl = props.cont_meta['url'].split('main/')[1];//哈哈哈哈哈我特么笑yue，什么补丁行为，不管了能用就行
 				let url = ['.', rootUrl, ...index].join('/');
-				let lst = rootUrl.split('.');
+				let lst = url.split('.');
 				let suffix = lst[lst.length - 1];
 				let exclude = ['jpg', 'mp4', 'gif', 'png', 'webp', 'html']
 				if (exclude.indexOf(suffix) != -1) {//媒体文件、网页，直接打开
-					window.open(url);
+					let ref = window.open(url);
 				}
 				else {//完全不知道为什么，使用window.open打开文本文件会乱码，受不了只能用这个方式处理
 					//window.open详解：https://juejin.cn/post/7039917181366190110
@@ -52,9 +52,10 @@ async function ItemClick(index, node) {
 					let cont = await resp.text();
 					let ref = window.open(url);
 					ref.onload = function () {
-						console.log(ref.document)
+						// console.log(ref.document)
 						let node = ref.document.querySelector('pre');
-						node.innerText = cont;
+						if (node)
+							node.innerText = cont;
 					}
 				}
 			}
