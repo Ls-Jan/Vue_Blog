@@ -6,11 +6,11 @@ import { Search } from '@element-plus/icons-vue'
 import { ElScrollbar } from 'element-plus'
 
 const props = defineProps({
-    data: { default: [{ label: 'None', children: [] }] },
-    isLoading: { default: false },
-    type: { default: 'TreeView_Large' },
-    emptyText: { default: '无数据' },
-    searchable: { default: true }
+	data: { default: [{ label: 'None', children: [] }] },
+	isLoading: { default: false },
+	type: { default: 'TreeView_Large' },
+	emptyText: { default: '无数据' },
+	searchable: { default: true }
 });
 const emit = defineEmits(['click']);//click(path,node)，path是路径列表，node是ElTree树节点
 
@@ -21,36 +21,37 @@ const emit = defineEmits(['click']);//click(path,node)，path是路径列表，n
 const treeRef = ref()
 const filterText = ref('')
 watch(filterText, () => {
-    treeRef.value.filter(filterText.value);
+	treeRef.value.filter(filterText.value);
 })
 
 function ClickNode(data, node) {
-    let lst = [];
-    let curr = node;
-    do {
-        lst.push(curr.label)
-        curr = curr.parent;
-    }
-    while (curr.level > 0);
-    emit('click', lst.reverse(), node);
+	let lst = [];
+	let curr = node;
+	do {
+		lst.push(curr.label)
+		curr = curr.parent;
+	}
+	while (curr.level > 0);
+	// console.log(lst);
+	emit('click', lst.reverse(), node);
 }
 
 function FilterNode(value, data) {
-    if (!value) return true
-    return data.label.toLowerCase().includes(value.toLowerCase())
+	if (!value) return true
+	return data.label.toLowerCase().includes(value.toLowerCase())
 }
 
 </script>
 
 <template>
-    <div v-loading="props.isLoading" style="user-select: none;" :class="props.type" element-loading-text="加载中...">
+	<div v-loading="props.isLoading" style="user-select: none;" :class="props.type" element-loading-text="加载中...">
 
-        <el-input :prefix-icon="Search" v-if="props.searchable" v-model="filterText" placeholder="搜索" />
-        <el-scrollbar>
-            <el-tree ref="treeRef" :filter-node-method="FilterNode" :data="props.data" :empty-text="props.emptyText"
-                @node-click="ClickNode" accordion />
-        </el-scrollbar>
-    </div>
+		<el-input :prefix-icon="Search" v-if="props.searchable" v-model="filterText" placeholder="搜索" />
+		<el-scrollbar>
+			<el-tree ref="treeRef" :filter-node-method="FilterNode" :data="props.data" :empty-text="props.emptyText"
+				@node-click="ClickNode" accordion />
+		</el-scrollbar>
+	</div>
 </template>
 
 
@@ -58,28 +59,28 @@ function FilterNode(value, data) {
 <!-- 但通过设置组件的class可以有效规避这个问题 -->
 <style>
 .TreeView_Large {
-    .el-tree-node__content {
-        height: fit-content;
-    }
+	.el-tree-node__content {
+		height: fit-content;
+	}
 
-    .el-tree-node__label {
-        font-size: 1.2rem;
-        line-height: 3rem;
-        letter-spacing: 1px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+	.el-tree-node__label {
+		font-size: 1.2rem;
+		line-height: 3rem;
+		letter-spacing: 1px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
 }
 
 .el-tree__empty-block {
-    height: 10rem;
+	height: 10rem;
 }
 
 .el-tree__empty-text {
-    overflow: hidden;
-    width: 100%;
-    white-space: pre-wrap;
-    word-break: break-all;
+	overflow: hidden;
+	width: 100%;
+	white-space: pre-wrap;
+	word-break: break-all;
 }
 </style>
 
