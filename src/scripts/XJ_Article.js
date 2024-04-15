@@ -138,7 +138,6 @@ function Opt_UpdateNav(github = false, blog = false, force = false) {
 }
 
 
-
 function Opt_UpdateArticle(force = true) {
 	let index = this.data_navIndex.value;
 	this.stat_OptResult.value['article'] = 0;
@@ -155,6 +154,15 @@ function Opt_UpdateArticle(force = true) {
 				this.__promise
 					.then((data) => {
 						let url = data['url'];
+						//【新增】帝皇级待遇，对url进行一波处理。
+						// 项目放三个月就记不清很多内容，只不过虽然记不清'api.github.com'是怎么来的，至少简单看了下它是由XJ_Github.Get_Readme造成的残留，
+						// 这里就对形如“https://api.github.com/repos/Ls-Jan/PyQt_GIFCreator/contents/README.md?ref=main”进行简单粗暴的替换，
+						// 替换成“https://githubraw.com/Ls-Jan/PyQt_GIFCreator/main/”就能投入使用了
+						if (url.indexOf('api.github.com') != -1) {//虽然这里没必要进行字符串判断，小防一手，反正也不碍事
+							let branch = url.substr(url.lastIndexOf('?ref=') + '?ref='.length);
+							url = url.replace('/api.github.com/repos/', '/githubraw.com/');
+							url = url.replace('/contents/', '/' + branch + '/');
+						}
 						data = XJ_Github.Trans_Readme(data);
 						this.data_article.value = this.Trans_Markdown(data, url.substr(0, url.lastIndexOf('/')));
 						this.stat_XRateLimit.value = XJ_Github.Get_XRatelimit();
@@ -229,7 +237,7 @@ function Trans_Markdown(data, rootUrl = './') {
 	//在线核对正则表达式
 	let reLst = [//依次把图片链接替换
 		[/(?<=<\s*img\s+src\s*=\s*['"]\s*)\./g, rootUrl],//替换形如<img src="./A/B/C">
-		[/(?<=\!\[.*\]\().(?=\/)/g, rootUrl],//替换形如![...](./A/B/C)
+		[/(?<=\[.*\]\().(?=\/)/g, rootUrl],//替换形如[...](./A/B/C)。因为除了图片外，md语法中还有个超链接语法[XXX](url)，这个也是要规避的
 		[/(?<=https:\/\/github.com\/.*?\/.*?\/)blob\//g, ''],//将图片链接中出现的blob/路径去除掉
 		[/(?<=<\s*img\s+src\s*=\s*['"]\s*https:\/\/)github.com/g, 'githubraw.com'],//替换形如<img src="https://github.com/XXX">
 		[/(?<=\!\[.*\]\(https:\/\/)github.com(?=\/)/g, 'githubraw.com'],//替换形如![...](https://github.com/XXX)>

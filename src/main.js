@@ -5,11 +5,13 @@ import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import './assets/main.css'
 import { createApp } from 'vue'
-import { ElLoading } from 'element-plus'
+// import { ElLoading } from 'element-plus'
 import App from './App.vue'
+import ElementPlus from 'element-plus'
 
 const app = createApp(App);
-app.directive('loading', ElLoading.directive)
+app.use(ElementPlus)//安装插件
+// app.directive('loading', ElLoading.directive)//安装指令
 app.mount('#app');
 
 
