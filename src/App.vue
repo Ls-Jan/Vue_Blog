@@ -1,11 +1,10 @@
-
 <script setup>
 
 import { ref, watch, reactive, nextTick, computed, shallowRef, onMounted } from 'vue'
 import { ElRow, ElCol } from 'element-plus';
 import { ElMessage } from 'element-plus';
 import { ElDivider } from 'element-plus';
-import { XJ_Article } from './scripts/XJ_Article'
+import { XJ_Article } from './scripts/XJ_Article';
 
 import NaviBar from './components/NaviBar.vue'
 import TreeView from './components/TreeView.vue'
@@ -163,9 +162,10 @@ onMounted(() => {
 				<el-col class="Article" :span="XJ_Article.stat_NavShow.value ? 18 : 23">
 					<div v-if="XJ_Article.data_navIndex.value.length > 0">
 						<!-- 别问为什么不直接用v-bind="props_article"直接绑定，而采取一个一个列出来的费事举动，问就是找不到解决方法 -->
-						<Article :cont_article="props_article.cont_article.value" :cont_tag="props_article.cont_tag.value"
-							:cont_refresh="props_article.cont_refresh.value" :cont_meta="XJ_Article.data_meta.value"
-							:showHeader="props_article.showHeader.value" :showAddition="props_article.showAddition.value"
+						<Article :cont_article="props_article.cont_article.value"
+							:cont_tag="props_article.cont_tag.value" :cont_refresh="props_article.cont_refresh.value"
+							:cont_meta="XJ_Article.data_meta.value" :showHeader="props_article.showHeader.value"
+							:showAddition="props_article.showAddition.value"
 							:click_refresh="props_article.click_refresh" :click_back="props_article.click_back"
 							:is-loading="XJ_Article.stat_OptResult.value['article'] == 0">
 						</Article>

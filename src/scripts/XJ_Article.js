@@ -1,6 +1,7 @@
 
 import { ref, watch } from 'vue'
 import { XJ_Github } from './XJ_Github'
+XJ_Github.__Init();
 
 //【耦合重灾区】
 export var XJ_Article = {
