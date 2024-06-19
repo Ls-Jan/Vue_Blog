@@ -3,6 +3,18 @@
 #然后我半懂不懂地去搜本地服务器如何携带MIME信息，于是找到这份代码。
 #源码：https://dev.to/gavi/custom-mime-type-with-python-3-httpserver-530l
 
+
+# Set the server address and port
+server_address = ("localhost", 8000)
+print(f"Serving on http://{server_address[0]}:{server_address[1]}")
+
+# 【打开网页】
+if True:
+	import os
+	os.system(f'explorer http://{server_address[0]}:{server_address[1]}')
+
+
+
 import http.server
 import socketserver
 from urllib.parse import urlparse
@@ -33,14 +45,8 @@ class CustomMimeTypesHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
 
 # Set the handler to use the custom class
 handler = CustomMimeTypesHTTPRequestHandler
-
-# Set the server address and port
-server_address = ("", 4001)
-server_address = ("", 8000)
-
 # Create the server and bind the address and handler
 httpd = socketserver.TCPServer(server_address, handler)
-
-print(f"Serving on http://{server_address[0]}:{server_address[1]}")
 httpd.serve_forever()
+
 
